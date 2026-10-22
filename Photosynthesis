@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate Bot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef4ff;
+      margin: 0;
+      padding: 20px;
+      color: #243047;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: 40px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2864c5;
+    }
+
+    .description {
+      text-align: center;
+      color: #555;
+    }
+
+    #chatbox {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 10px;
+      background: #fafcff;
+    }
+
+    .message {
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 10px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .bot {
+      background: #e5edff;
+      text-align: left;
+    }
+
+    .user {
+      background: #2864c5;
+      color: white;
+      text-align: right;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 8px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px 18px;
+      background: #2864c5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:hover {
+      background: #174b9c;
+    }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .suggestions button {
+      background: #e5edff;
+      color: #2455a0;
+    }
+
+    .footer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>📘 StudyMate Bot</h1>
+
+    <p class="description">
+      Your friendly study assistant!
+      Ask questions and get helpful study tips.
+    </p>
+
+    <div class="suggestions">
+      <button onclick="askSuggestion('Give me study tips')">
+        Study Tips
+      </button>
+      <button onclick="askSuggestion('Help me make a study plan')">
+        Study Plan
+      </button>
+      <button onclick="askSuggestion('Explain photosynthesis')">
+        Science Help
+      </button>
+      <button onclick="askSuggestion('How can I prepare for an exam?')">
+        Exam Tips
+      </button>
+    </div>
+
+    <div id="chatbox">
+      <div class="message bot">
+        Hello! 👋 Welcome to StudyMate Bot!
+
+        I can help you with study tips, revision plans,
+        and simple explanations of school topics.
+
+        What would you like to learn today?
+      </div>
+    </div>
+
+    <div class="input-area">
+      <input
+        type="text"
+        id="userInput"
+        placeholder="Type your question here..."
+        onkeydown="if(event.key === 'Enter') sendMessage()"
+      >
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <p class="footer">
+      StudyMate Bot — Learn better, one question at a time!
+    </p>
+  </div>
+
+  <script>
+    function addMessage(text, sender) {
+      const chatbox = document.getElementById("chatbox");
+      const message = document.createElement("div");
+
+      message.className = "message " + sender;
+      message.textContent = text;
+
+      chatbox.appendChild(message);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function getBotResponse(question) {
+      const q = question.toLowerCase();
+
+      if (q.includes("hello") || q === "hi" || q.includes("hey")) {
+        return "Hello! 😊 What subject would you like help with today?";
+      }
+
+      if (
+        q.includes("study tips") ||
+        q.includes("study better") ||
+        q.includes("focus")
+      ) {
+        return "Here are 4 study tips:\n\n1. Set a clear study goal.\n2. Study for 25 minutes and take a short break.\n3. Practise questions instead of only reading notes.\n4. Get enough sleep and avoid distractions.";
+      }
+
+      if (
+        q.includes("study plan") ||
+        q.includes("timetable") ||
+        q.includes("schedule")
+      ) {
+        return "Here is a simple 1-hour study plan:\n\n5 minutes: Prepare your materials.\n20 minutes: Review your lesson.\n5 minutes: Take a break.\n20 minutes: Practise questions.\n10 minutes: Check your answers and review mistakes.";
+      }
+
+      if (
+        q.includes("photosynthesis") ||
+        q.includes("plant")
+      ) {
+        return "Photosynthesis is how plants make their own food. Plants use sunlight, water, and carbon dioxide to make glucose and release oxygen. Chlorophyll in the leaves absorbs sunlight.";
+      }
+
+      if (
+        q.includes("exam") ||
+        q.includes("test") ||
+        q.includes("revision")
+      ) {
+        return "Here are some exam preparation tips:\n\n1. Make a list of topics to revise.\n2. Start with difficult topics.\n3. Practise past questions.\n4. Review your mistakes.\n5. Rest well before the exam.";
+      }
+
+      if (
+        q.includes("math") ||
+        q.includes("mathematics")
+      ) {
+        return "For mathematics, read the question carefully, identify what you need to find, and solve it step by step. Send me a specific practice question and I can help explain the method.";
+      }
+
+      if (q.includes("science")) {
+        return "I can help explain basic science topics in simple language. Tell me which science topic you are learning.";
+      }
+
+      if (
+        q.includes("english") ||
+        q.includes("grammar") ||
+        q.includes("vocabulary")
+      ) {
+        return "To improve your English, read a little every day, learn new vocabulary, and practise writing sentences. You can also ask me for simple explanations of English words.";
+      }
+
+      return "Thanks for your question! I am a basic study chatbot. Try asking me about study tips, study plans, science, photosynthesis, mathematics, English, or exam preparation.";
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const question = input.value.trim();
+
+      if (question === "") {
+        return;
+      }
+
+      addMessage(question, "user");
+
+      const answer = getBotResponse(question);
+      addMessage(answer, "bot");
+
+      input.value = "";
+      input.focus();
+    }
+
+    function askSuggestion(question) {
+      addMessage(question, "user");
+
+      const answer = getBotResponse(question);
+      addMessage(answer, "bot");
+    }
+  </script>
+
+</body>
+</html>
